@@ -3,7 +3,6 @@ import orderCollection from "../orderModel.js";
 
 export const createOrder = async (req, res) => {
   const order = req.body;
-  console.log(order);
   try {
     const newOrder = new orderCollection(order);
     await newOrder.save();

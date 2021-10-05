@@ -1,14 +1,18 @@
 import express from "express";
+import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import nameRoutes from "./routes/name.js";
 import orderRoutes from "./routes/order.js";
+
 const app = express();
+app.use(bodyParser.json({ limit: "30mb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
 app.use("/", nameRoutes);
-app.use("/order", orderRoutes);
+app.use("/", orderRoutes);
 
 dotenv.config();
 const PORT = process.env.PORT;
@@ -20,7 +24,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(PORT, "192.168.100.76", () => {
+    app.listen(PORT, () => {
       console.log(`Server is running on port: ${PORT}`);
     });
   })
