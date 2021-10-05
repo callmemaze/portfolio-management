@@ -201,7 +201,6 @@ const Order = () => {
                     color="primary"
                     size="large"
                     type="submit"
-                    size="small"
                     sx={{ width: 300 }}
                   >
                     Submit
