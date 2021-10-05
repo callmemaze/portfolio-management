@@ -11,7 +11,8 @@ import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { createOrder, fetchName } from "./actions/name";
+import { fetchName } from "./actions/name";
+import { createOrder } from "./actions/order";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,

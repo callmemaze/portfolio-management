@@ -8,12 +8,3 @@ export const fetchName = () => async (dispatch) => {
     console.log(error.message);
   }
 };
-
-export const createOrder = (order) => async (dispatch) => {
-  try {
-    const { data } = await API.createPost(order);
-    dispatch({ type: "CREATE", payload: data });
-  } catch (error) {
-    console.log(error);
-  }
-};

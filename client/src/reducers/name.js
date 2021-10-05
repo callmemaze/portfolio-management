@@ -1,10 +1,8 @@
-export default (order = [], action) => {
+export default (name = [], action) => {
   switch (action.type) {
     case "FETCH_ALL":
       return action.payload;
-    case "CREATE":
-      return [...order, action.payload];
     default:
-      return order;
+      return name;
   }
 };
