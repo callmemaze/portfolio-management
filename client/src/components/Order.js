@@ -8,7 +8,6 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Switch from "@mui/material/Switch";
 import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchName } from "./actions/name";
@@ -20,50 +19,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-
-const AntSwitch = styled(Switch)(({ theme }) => ({
-  width: 28,
-  height: 16,
-  padding: 0,
-  display: "flex",
-  "&:active": {
-    "& .MuiSwitch-thumb": {
-      width: 15,
-    },
-    "& .MuiSwitch-switchBase.Mui-checked": {
-      transform: "translateX(9px)",
-    },
-  },
-  "& .MuiSwitch-switchBase": {
-    padding: 2,
-    "&.Mui-checked": {
-      transform: "translateX(12px)",
-      color: "#fff",
-      "& + .MuiSwitch-track": {
-        opacity: 1,
-        backgroundColor: theme.palette.mode === "dark" ? "#177ddc" : "#1890ff",
-      },
-    },
-  },
-  "& .MuiSwitch-thumb": {
-    boxShadow: "0 2px 4px 0 rgb(0 35 11 / 20%)",
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    transition: theme.transitions.create(["width"], {
-      duration: 200,
-    }),
-  },
-  "& .MuiSwitch-track": {
-    borderRadius: 16 / 2,
-    opacity: 1,
-    backgroundColor:
-      theme.palette.mode === "dark"
-        ? "rgba(255,255,255,.35)"
-        : "rgba(0,0,0,.25)",
-    boxSizing: "border-box",
-  },
-}));
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 const columns = [
   { id: "number", label: "S.N", minWidth: 170 },
@@ -101,6 +58,10 @@ const columns = [
 function createData(number, name, type, quantity, amount, date) {
   return { number, name, type, quantity, amount, date };
 }
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const Order = () => {
   const [checked, setChecked] = useState(false);
@@ -142,6 +103,7 @@ const Order = () => {
           data.date
         ),
       ]);
+      setOpen(true);
       clear();
       setError(false);
     }
@@ -180,6 +142,14 @@ const Order = () => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+  const [open, setOpen] = React.useState(false);
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
   return (
     <Box
       component="main"
@@ -191,6 +161,7 @@ const Order = () => {
         flexGrow: 1,
         height: "100vh",
         overflow: "auto",
+        paddingTop: 10,
       }}
     >
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -376,6 +347,17 @@ const Order = () => {
           </Grid>
         </Grid>
       </Container>
+      <Stack spacing={2} sx={{ width: "100%" }}>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert
+            onClose={handleClose}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            Order Successful
+          </Alert>
+        </Snackbar>
+      </Stack>
     </Box>
   );
 };
