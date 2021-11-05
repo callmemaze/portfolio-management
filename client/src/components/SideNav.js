@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -14,6 +14,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import PersonIcon from "@mui/icons-material/Person";
 import ListItems from "./ListItems";
+import { Button } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -66,8 +69,20 @@ const mdTheme = createTheme();
 
 const SideNav = ({ heading }) => {
   const [open, setOpen] = React.useState(true);
+  const location = useLocation();
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("profile")));
+  }, [location]);
   const toggleDrawer = () => {
     setOpen(!open);
+  };
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const logout = () => {
+    dispatch({ type: "LOGOUT" });
+    history.push("/auth");
+    setUser(null);
   };
   return (
     <ThemeProvider theme={mdTheme}>
@@ -109,8 +124,11 @@ const SideNav = ({ heading }) => {
               <PersonIcon />
             </IconButton>
             <Typography variant="h7" color="inherit">
-              Username
+              {user?.result?.name}
             </Typography>
+            <Button variant="contained" color="error" onClick={logout}>
+              Logout
+            </Button>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>

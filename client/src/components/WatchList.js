@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -28,31 +28,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(
-  number,
-  name,
-  unit,
-  totalInvestment,
-  soldValue,
-  currentValue
-) {
-  return { number, name, unit, totalInvestment, soldValue, currentValue };
-}
-
-const rows = [
-  createData(1, "Standard Chartered Bank", 100, 10000, 5000, 50000, 87764),
-  createData(2, "Nepal Investment Bank", 100, 10000, 5000, 50000, 87764),
-  createData(3, "Nabil Bank", 100, 10000, 5000, 50000, 87764),
-  createData(4, "Asian Life Insurance", 100, 10000, 5000, 50000, 87764),
-];
-
-const WatchList = () => {
+const WatchList = ({ share }) => {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>S.N</StyledTableCell>
             <StyledTableCell align="right">Stock Name</StyledTableCell>
             <StyledTableCell align="right">Total Unit&nbsp;(g)</StyledTableCell>
             <StyledTableCell align="right">Total Investment</StyledTableCell>
@@ -61,21 +42,20 @@ const WatchList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {share.map((row) => (
             <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
-                {row.number}
-              </StyledTableCell>
               <StyledTableCell component="th" scope="row">
                 {row.name}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.unit}</StyledTableCell>
+              <StyledTableCell align="right">{row.quantity}</StyledTableCell>
               <StyledTableCell align="right">
                 {row.totalInvestment}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.soldValue}</StyledTableCell>
               <StyledTableCell align="right">
-                {row.currentValue}
+                {row.quantity * row?.price}
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                {row.quantity * (row.quantity * row?.price)}
               </StyledTableCell>
             </StyledTableRow>
           ))}
