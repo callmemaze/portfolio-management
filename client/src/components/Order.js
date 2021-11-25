@@ -86,7 +86,10 @@ const Order = () => {
     return or;
   });
   const share = useSelector((state) => state.holder);
-  console.log(share);
+  const shareArray = share.map((or) => {
+    return or.name;
+  });
+  console.log(shareArray);
   const stockArray = stock.map((stockName) => {
     return stockName.name;
   });
@@ -188,7 +191,7 @@ const Order = () => {
                       getOptionLabel={(option) => option}
                       size="small"
                       id="combo-box-demo"
-                      options={stockArray}
+                      options={data.type === "Sell" ? shareArray : stockArray}
                       sx={{ width: 300 }}
                       onChange={(e, value) => setData({ ...data, name: value })}
                       renderInput={(params) => (

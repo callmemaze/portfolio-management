@@ -4,7 +4,14 @@ import shareHolder from "../shareHolderModel.js";
 export const getShare = async (req, res) => {
   try {
     const share = await shareHolder.find({ userID: req.userId });
-    console.log(share);
+    const name = share.name;
+    if (share.quantity < 1) {
+      const deleteShare = await shareHolder.deleteOne({
+        userID: req.userId,
+        name,
+      });
+      console.log(deleteShare);
+    }
     res.status(200).json(share);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -31,16 +38,20 @@ export const createShare = async (req, res) => {
         res.json(newShare);
       } else {
         if (share.type === "Sell") {
-          const newShare = await shareHolder.updateOne(
-            { userID: req.userId, name },
-            {
-              $inc: { quantity: -addShare },
-            },
-            {
-              new: true,
-            }
-          );
-          res.json(newShare);
+          if (shareExist.quantity < addShare) {
+            res.status(400).json({ message: "You dont have enough shares" });
+          } else {
+            const newShare = await shareHolder.updateOne(
+              { userID: req.userId, name },
+              {
+                $inc: { quantity: -addShare },
+              },
+              {
+                new: true,
+              }
+            );
+            res.json(newShare);
+          }
         }
       }
     }
